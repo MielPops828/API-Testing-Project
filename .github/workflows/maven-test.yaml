@@ -25,20 +25,17 @@ jobs:
           cache: 'maven'
 
       - name: Install Docker
-        run: |
+        run:
           sudo apt-get update
-          sudo apt-get install -y docker-compose
+          sudo apt-get install docker-compose -y
 
       - name: Clone repository
         run: git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git
 
-      - name: List directory contents
+      - name: Project directory
         run: |
           cd simbirsoft_sdet_project
-          ls -la
-
-      - name: Project deploy
-        run: docker-compose up --build -d
+          docker-compose up --build -d
 
       - name: Run tests with Maven
         run: mvn clean test
