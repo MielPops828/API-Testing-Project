@@ -34,7 +34,7 @@ jobs:
 
       - name: List directory contents
         run: |
-          cd repo
+          cd simbirsoft_sdet_project
           ls -la
 
       - name: Project deploy
