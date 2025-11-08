@@ -9,6 +9,8 @@ import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 
 @Epic("API-Test")
@@ -17,7 +19,14 @@ public class GetEntityTest extends BaseTest{
     @Test
     @Description("Тест получения сущности по id")
     public void getEntityTest(){
-        int entityId = 5;
+        List<EntityResponse> entitiesList = given(spec)
+                .get("/getAll")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .jsonPath()
+                .getList("entity", EntityResponse.class);
+        int entityId = entitiesList.get(1).getId();
         Response response = given(spec)
                 .get("/get/" + entityId)
                 .then()

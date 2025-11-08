@@ -1,7 +1,6 @@
 package dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dto.request.AdditionRequest;
 import lombok.*;
 
 import java.util.List;

@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="APISuite" parallel="methods" thread-count="3">
+<suite name="APISuite" parallel="methods" thread-count="5">
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
@@ -8,6 +8,8 @@
             <class name="test.CreateEntityTest"/>
             <class name="test.GetEntityTest"/>
             <class name="test.DeleteEntityTest"/>
+            <class name="test.GetAllEntityTest"/>
+            <class name="test.PatchEntityTest"/>
         </classes>
     </test>
 </suite>
