@@ -23,11 +23,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
-          
+
       - name: Install Docker
-        run:
+        run: |
           sudo apt-get update
-          sudo apt-get install docker-compose -y
+          sudo apt-get install -y docker-compose
 
       - name: Clone repository
         run: git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git
