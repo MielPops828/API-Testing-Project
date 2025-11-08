@@ -24,6 +24,15 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Clone repository
+        run: git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git
+
+      - name: Project directory
+        run: cd simbirsoft_sdet_project
+
+      - name: Project deploy
+        run: make run
+
       - name: Run tests with Maven
         run: mvn clean test
 
