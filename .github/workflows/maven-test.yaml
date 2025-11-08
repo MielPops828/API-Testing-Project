@@ -23,6 +23,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
+          
+      - name: Install Docker
+        run:
+          sudo apt-get update
+          sudo apt-get install docker-compose -y
 
       - name: Clone repository
         run: git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git
@@ -31,7 +36,7 @@ jobs:
         run: cd simbirsoft_sdet_project
 
       - name: Project deploy
-        run: docker compose up --build -d
+        run: docker-compose up --build -d
 
       - name: Run tests with Maven
         run: mvn clean test
