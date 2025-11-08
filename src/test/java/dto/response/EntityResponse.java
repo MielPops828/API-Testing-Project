@@ -1,16 +1,15 @@
-package dto;
+package dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import dto.request.AdditionRequest;
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Entity {
+public class EntityResponse {
     private int id;
 
     private String title;
@@ -20,5 +19,5 @@ public class Entity {
     @JsonProperty("important_numbers")
     private List<Integer> importantNumbers;
 
-    private Addition addition;
+    private AdditionResponse addition;
 }

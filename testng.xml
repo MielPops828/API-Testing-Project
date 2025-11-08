@@ -3,13 +3,9 @@
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
-    <test name="Bank Tests">
+    <test name="API Tests">
         <classes>
-<!--            <class name="tests.CreateCustomerTest"/>-->
-<!--            <class name="tests.SortCustomersTest"/>-->
-<!--            <class name="tests.DeleteCustomerTest"/>-->
-<!--            <class name="tests.DeleteCustomerTest"/>-->
-<!--            <class name="tests.DeleteCustomerTest"/>-->
+            <class name="test.CreateEntityTest"/>
         </classes>
     </test>
 </suite>
