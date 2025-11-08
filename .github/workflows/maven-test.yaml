@@ -31,7 +31,7 @@ jobs:
         run: cd simbirsoft_sdet_project
 
       - name: Project deploy
-        run: make run
+        run: docker-compose up --build -d
 
       - name: Run tests with Maven
         run: mvn clean test
