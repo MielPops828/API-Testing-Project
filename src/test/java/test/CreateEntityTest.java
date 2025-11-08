@@ -2,11 +2,11 @@ package test;
 
 import dto.request.AdditionRequest;
 import dto.request.EntityRequest;
-import dto.response.EntityResponse;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -36,11 +36,9 @@ public class CreateEntityTest extends BaseTest{
                 .body(request)
                 .post("/create")
                 .then()
+                .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
-
-        Assert.assertEquals(response.statusCode(), 200, "Неверный код ответа");
-
         int entityId = Integer.parseInt(response.asString());
         Assert.assertTrue(entityId > 0, "Неверный ID созданной сущности");
     }
