@@ -38,7 +38,7 @@ jobs:
           docker-compose up --build -d
 
       - name: Wait for API to be ready
-        run: sleep 15
+        run: sleep 30
 
       - name: Run tests with Maven
         run: mvn clean test
