@@ -37,6 +37,9 @@ jobs:
           cd simbirsoft_sdet_project
           docker-compose up --build -d
 
+      - name: Wait for API to be ready
+        run: sleep 15
+
       - name: Run tests with Maven
         run: mvn clean test
 
