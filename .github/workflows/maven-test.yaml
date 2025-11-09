@@ -32,7 +32,7 @@ jobs:
       - name: Clone repository
         run: git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git
 
-      - name: Project directory
+      - name: Go to project directory
         run: |
           cd simbirsoft_sdet_project
           docker-compose up --build -d
