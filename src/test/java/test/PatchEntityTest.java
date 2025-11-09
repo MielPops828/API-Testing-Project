@@ -2,10 +2,11 @@ package test;
 
 import dto.request.AdditionRequest;
 import dto.request.EntityRequest;
+import dto.response.EntityResponse;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.restassured.http.ContentType;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
@@ -15,7 +16,8 @@ public class PatchEntityTest extends BaseTest {
     @Test
     @Description("Тест обновления сущности и ее дополнения")
     public void patchEntityTest(){
-        EntityRequest request = EntityRequest.builder()
+        EntitySteps step = new EntitySteps(spec);
+        EntityRequest original = EntityRequest.builder()
                 .title("Patch Entity")
                 .verified(true)
                 .importantNumbers(java.util.List.of(1, 2))
@@ -25,18 +27,7 @@ public class PatchEntityTest extends BaseTest {
                         .build())
                 .build();
 
-        String idString = given()
-                .spec(spec)
-                .accept(ContentType.TEXT)
-                .body(request)
-                .when()
-                .post("/create")
-                .then()
-                .statusCode(200)
-                .extract()
-                .asString();
-
-        int id = Integer.parseInt(idString.trim());
+        int entityId = step.initEntity(original);
 
         EntityRequest updated = EntityRequest.builder()
                 .title("Updated Patch")
@@ -50,8 +41,16 @@ public class PatchEntityTest extends BaseTest {
 
         given().spec(spec)
                 .body(updated)
-                .patch("/patch/{id}", id)
+                .patch("/patch/{id}", entityId)
                 .then()
                 .statusCode(204);
+
+        EntityResponse response = step.getEntityById(entityId);
+
+        Assert.assertEquals(response.getTitle(), updated.getTitle(), "Название сущности не совпадает");
+        Assert.assertEquals(response.isVerified(), updated.isVerified(), "Флаг не совпадает");
+        Assert.assertEquals(response.getImportantNumbers(), updated.getImportantNumbers(), "Список чисел не совпадает");
+        Assert.assertEquals(response.getAddition().getAdditionalInfo(), updated.getAddition().getAdditionalInfo(), "Дополнительная информация не совпадает");
+        Assert.assertEquals(response.getAddition().getAdditionalNumber(), updated.getAddition().getAdditionalNumber(), "Дополнительное число не совпадают");
     }
 }

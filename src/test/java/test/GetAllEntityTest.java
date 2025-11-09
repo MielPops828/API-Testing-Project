@@ -20,6 +20,7 @@ public class GetAllEntityTest extends BaseTest{
     @Test
     @Description("Тест получения списка всех сущностей")
     public void getAllEntityTest(){
+        EntitySteps step = new EntitySteps(spec);
         EntityRequest request = EntityRequest.builder()
                 .title("GetAll Entities")
                 .verified(true)
@@ -30,16 +31,7 @@ public class GetAllEntityTest extends BaseTest{
                         .build())
                 .build();
 
-        Response createEntity = given()
-                .spec(spec)
-                .accept(ContentType.TEXT)
-                .body(request)
-                .when()
-                .post("/create")
-                .then()
-                .statusCode(200)
-                .extract()
-                .response();
+        step.initEntity(request);
 
         Response response = given(spec)
                 .get("/getAll")

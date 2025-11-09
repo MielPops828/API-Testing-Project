@@ -15,6 +15,7 @@ public class DeleteEntityTest extends BaseTest{
     @Test
     @Description("Тест удаления сущности по id")
     public void deleteEntityTest(){
+        EntitySteps step = new EntitySteps(spec);
         EntityRequest request = EntityRequest.builder()
                 .title("Delete Entity")
                 .verified(true)
@@ -25,24 +26,13 @@ public class DeleteEntityTest extends BaseTest{
                         .build())
                 .build();
 
-        String idString = given()
-                .spec(spec)
-                .accept(ContentType.TEXT)
-                .body(request)
-                .when()
-                .post("/create")
-                .then()
-                .statusCode(200)
-                .extract()
-                .asString();
-
-        int id = Integer.parseInt(idString.trim());
+        int entityId = step.initEntity(request);
 
         given()
                 .spec(spec)
                 .accept(ContentType.TEXT)
                 .when()
-                .delete("/delete/{id}", id)
+                .delete("/delete/{id}", entityId)
                 .then()
                 .statusCode(204);
     }

@@ -1,0 +1,1 @@
+{"uuid":"2c641d42-d71a-448c-acfd-d45adb8e731d","name":"test.DeleteEntityTest","children":["f171c08e-b7fa-436c-b8c2-a108d341bec8"],"befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1762713246428,"stop":1762713247950}],"afters":[],"start":1762713246325,"stop":1762713252864}
