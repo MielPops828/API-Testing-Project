@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -26,7 +25,7 @@ public class CreateEntityTest extends BaseTest{
                 .build();
 
         EntityRequest request = EntityRequest.builder()
-                .title("Заголовок сущности")
+                .title("Create Entity")
                 .verified(true)
                 .importantNumbers(Arrays.asList(42, 87, 15))
                 .addition(addition)
@@ -36,7 +35,7 @@ public class CreateEntityTest extends BaseTest{
                 .body(request)
                 .post("/create")
                 .then()
-                .statusCode(HttpStatus.SC_OK)
+                .statusCode(200)
                 .extract()
                 .response();
         int entityId = Integer.parseInt(response.asString());

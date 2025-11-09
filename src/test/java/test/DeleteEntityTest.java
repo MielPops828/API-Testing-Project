@@ -1,14 +1,12 @@
 package test;
 
-import dto.response.EntityResponse;
+import dto.request.AdditionRequest;
+import dto.request.EntityRequest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
+import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 @Epic("API-Test")
@@ -17,20 +15,35 @@ public class DeleteEntityTest extends BaseTest{
     @Test
     @Description("Тест удаления сущности по id")
     public void deleteEntityTest(){
-        List<EntityResponse> entitiesList = given(spec)
-                .get("/getAll")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract()
-                .jsonPath()
-                .getList("entity", EntityResponse.class);
-        int entityId = entitiesList.get(0).getId();
+        EntityRequest request = EntityRequest.builder()
+                .title("Delete Entity")
+                .verified(true)
+                .importantNumbers(java.util.List.of(10, 20))
+                .addition(AdditionRequest.builder()
+                        .additionalInfo("Temp")
+                        .additionalNumber(100)
+                        .build())
+                .build();
 
-        Response response = given(spec)
-                .delete("/delete/" + entityId)
+        String idString = given()
+                .spec(spec)
+                .accept(ContentType.TEXT)
+                .body(request)
+                .when()
+                .post("/create")
                 .then()
-                .statusCode(HttpStatus.SC_NO_CONTENT)
+                .statusCode(200)
                 .extract()
-                .response();
+                .asString();
+
+        int id = Integer.parseInt(idString.trim());
+
+        given()
+                .spec(spec)
+                .accept(ContentType.TEXT)
+                .when()
+                .delete("/delete/{id}", id)
+                .then()
+                .statusCode(204);
     }
 }

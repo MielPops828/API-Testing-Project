@@ -2,16 +2,11 @@ package test;
 
 import dto.request.AdditionRequest;
 import dto.request.EntityRequest;
-import dto.response.EntityResponse;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
+import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 @Epic("API-Test")
@@ -19,35 +14,44 @@ import static io.restassured.RestAssured.given;
 public class PatchEntityTest extends BaseTest {
     @Test
     @Description("Тест обновления сущности и ее дополнения")
-    public void createEntityTest(){
-        List<EntityResponse> entitiesList = given(spec)
-                .get("/getAll")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract()
-                .jsonPath()
-                .getList("entity", EntityResponse.class);
-
-        int entityId = entitiesList.get(2).getId();
-
-        AdditionRequest addition = AdditionRequest.builder()
-                .additionalInfo("Обновленные сведения")
-                .additionalNumber(987)
-                .build();
-
+    public void patchEntityTest(){
         EntityRequest request = EntityRequest.builder()
-                .title("Обновленный заголовок сущности")
+                .title("Patch Entity")
                 .verified(true)
-                .importantNumbers(Arrays.asList(15, 15, 51))
-                .addition(addition)
+                .importantNumbers(java.util.List.of(1, 2))
+                .addition(AdditionRequest.builder()
+                        .additionalInfo("old info")
+                        .additionalNumber(1)
+                        .build())
                 .build();
 
-        Response response = given(spec)
+        String idString = given()
+                .spec(spec)
+                .accept(ContentType.TEXT)
                 .body(request)
-                .patch("/patch/" + entityId)
+                .when()
+                .post("/create")
                 .then()
-                .statusCode(HttpStatus.SC_NO_CONTENT)
+                .statusCode(200)
                 .extract()
-                .response();
+                .asString();
+
+        int id = Integer.parseInt(idString.trim());
+
+        EntityRequest updated = EntityRequest.builder()
+                .title("Updated Patch")
+                .verified(false)
+                .importantNumbers(java.util.List.of(99))
+                .addition(AdditionRequest.builder()
+                        .additionalInfo("new info")
+                        .additionalNumber(999)
+                        .build())
+                .build();
+
+        given().spec(spec)
+                .body(updated)
+                .patch("/patch/{id}", id)
+                .then()
+                .statusCode(204);
     }
 }

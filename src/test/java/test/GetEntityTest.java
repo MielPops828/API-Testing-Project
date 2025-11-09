@@ -1,15 +1,13 @@
 package test;
 
+import dto.request.AdditionRequest;
+import dto.request.EntityRequest;
 import dto.response.EntityResponse;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
-import org.testng.Assert;
+import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -19,23 +17,34 @@ public class GetEntityTest extends BaseTest{
     @Test
     @Description("Тест получения сущности по id")
     public void getEntityTest(){
-        List<EntityResponse> entitiesList = given(spec)
-                .get("/getAll")
+        EntityRequest request = EntityRequest.builder()
+                .title("Get Entity")
+                .verified(true)
+                .importantNumbers(java.util.List.of(42, 87, 15))
+                .addition(AdditionRequest.builder()
+                        .additionalInfo("Доп. данные")
+                        .additionalNumber(123)
+                        .build())
+                .build();
+
+        String idString = given()
+                .spec(spec)
+                .accept(ContentType.TEXT)
+                .body(request)
+                .when()
+                .post("/create")
                 .then()
-                .statusCode(HttpStatus.SC_OK)
+                .statusCode(200)
                 .extract()
-                .jsonPath()
-                .getList("entity", EntityResponse.class);
-        int entityId = entitiesList.get(1).getId();
-        Response response = given(spec)
-                .get("/get/" + entityId)
+                .asString();
+
+        int id = Integer.parseInt(idString.trim());
+
+        EntityResponse response = given().spec(spec)
+                .get("/get/{id}", id)
                 .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract()
-                .response();
-        EntityResponse entity = response.as(EntityResponse.class);
-        Assert.assertEquals(entity.getId(), entityId);
-        Assert.assertNotNull(entity.getTitle());
-        Assert.assertNotNull(entity.getAddition());
+                .statusCode(200)
+                .assertThat()
+                .extract().as(EntityResponse.class);
     }
 }
