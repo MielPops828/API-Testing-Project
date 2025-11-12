@@ -32,13 +32,16 @@ jobs:
       - name: Clone repository
         run: git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git
 
+      - name: Wait to clone project
+        run: sleep 10
+
       - name: Go to project directory
         run: |
           cd simbirsoft_sdet_project
           docker-compose up --build -d
 
       - name: Wait for API to be ready
-        run: sleep 40
+        run: sleep 20
 
       - name: Run tests with Maven
         run: mvn clean test
