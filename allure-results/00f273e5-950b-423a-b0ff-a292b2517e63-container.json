@@ -1,1 +1,0 @@
-{"uuid":"00f273e5-950b-423a-b0ff-a292b2517e63","name":"test.GetEntityTest","children":["6e69acaa-c9a0-4017-a0f0-36aa74c8a2c1"],"befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1762712031270,"stop":1762712032734}],"afters":[],"start":1762712031172,"stop":1762712037520}

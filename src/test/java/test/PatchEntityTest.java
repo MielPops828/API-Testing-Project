@@ -6,8 +6,8 @@ import dto.response.EntityResponse;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import static io.restassured.RestAssured.given;
 @Epic("API-Test")
@@ -17,6 +17,7 @@ public class PatchEntityTest extends BaseTest {
     @Description("Тест обновления сущности и ее дополнения")
     public void patchEntityTest(){
         EntitySteps step = new EntitySteps(spec);
+        SoftAssert softAssert = new SoftAssert();
         EntityRequest original = EntityRequest.builder()
                 .title("Patch Entity")
                 .verified(true)
@@ -47,10 +48,11 @@ public class PatchEntityTest extends BaseTest {
 
         EntityResponse response = step.getEntityById(entityId);
 
-        Assert.assertEquals(response.getTitle(), updated.getTitle(), "Название сущности не совпадает");
-        Assert.assertEquals(response.isVerified(), updated.isVerified(), "Флаг не совпадает");
-        Assert.assertEquals(response.getImportantNumbers(), updated.getImportantNumbers(), "Список чисел не совпадает");
-        Assert.assertEquals(response.getAddition().getAdditionalInfo(), updated.getAddition().getAdditionalInfo(), "Дополнительная информация не совпадает");
-        Assert.assertEquals(response.getAddition().getAdditionalNumber(), updated.getAddition().getAdditionalNumber(), "Дополнительное число не совпадают");
+        softAssert.assertEquals(response.getTitle(), updated.getTitle(), "Название сущности не совпадает");
+        softAssert.assertEquals(response.isVerified(), updated.isVerified(), "Флаг не совпадает");
+        softAssert.assertEquals(response.getImportantNumbers(), updated.getImportantNumbers(), "Список чисел не совпадает");
+        softAssert.assertEquals(response.getAddition().getAdditionalInfo(), updated.getAddition().getAdditionalInfo(), "Дополнительная информация не совпадает");
+        softAssert.assertEquals(response.getAddition().getAdditionalNumber(), updated.getAddition().getAdditionalNumber(), "Дополнительное число не совпадают");
+        softAssert.assertAll();
     }
 }
